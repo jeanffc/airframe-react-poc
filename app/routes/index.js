@@ -1,7 +1,10 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router";
 
+import { isAuthenticated } from "../services/auth";
+
 // ----------- Pages Imports ---------------
+import Dashboard from "./Dashboards/Dashboard";
 import Analytics from "./Dashboards/Analytics";
 import ProjectsDashboard from "./Dashboards/Projects";
 import System from "./Dashboards/System";
@@ -107,11 +110,25 @@ import { SidebarASidebar } from "./../layout/components/SidebarASidebar";
 
 //------ Route Definitions --------
 // eslint-disable-next-line no-unused-vars
+export const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      isAuthenticated() ? (
+        <Component {...props} />
+      ) : (
+        <Redirect to={{ pathname: "/", state: { from: props.location } }} />
+      )
+    }
+  />
+);
+
 export const RoutedContent = () => {
   return (
     <Switch>
       <Redirect from="/" to="/pages/login" exact />
 
+      <Route path="/dashboards/dashboard" exact component={Dashboard} />
       <Route path="/dashboards/analytics" exact component={Analytics} />
       <Route path="/dashboards/projects" exact component={ProjectsDashboard} />
       <Route path="/dashboards/system" exact component={System} />
