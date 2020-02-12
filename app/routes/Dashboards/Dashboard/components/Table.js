@@ -21,12 +21,14 @@ import { CustomSizePerPageButton } from "./CustomSizePerPageButton";
 import { CustomPaginationTotal } from "./CustomPaginationTotal";
 import { randomArray, randomAvatar } from "./../../../../utilities";
 
+const pagarme = require("pagarme");
+
 const generateRow = id => ({
   id,
-  status: randomArray(["Pago", "Pendente", "Aguardando", "Desconhecido"]),
+  status: randomArray(["paid", "waiting_payment"]),
   name: faker.name.findName(),
   email: faker.internet.email(),
-  payment: randomArray(["Cartão de Crédito", "Boleto"]),
+  payment_method: randomArray(["credit_card", "boleto"]),
   amount: 500 + Math.random() * 1000,
   currency: <i className="fa fa-fw fa-dollar text-muted" key="cur_usd"></i>,
   date: faker.date.recent()
@@ -42,15 +44,30 @@ export class Table extends React.Component {
     super(props);
 
     this.state = {
-      users: _.times(50, generateRow)
+      transactions: _.times(50, generateRow)
     };
   }
 
+  async componentDidMount() {
+    pagarme.client
+      .connect({ api_key: "ak_test_TkP0pqMRsXUT4IcwREFujs2qoivCqB" })
+      .then(client => client.transactions.all())
+      .then(transactions => {
+        console.log(transactions);
+        this.setState({
+          transactions: transactions
+        });
+      });
+  }
+
   handleAddRow() {
-    const usersLength = this.state.users.length;
+    const transactionsLength = this.state.transactions.length;
 
     this.setState({
-      users: [generateRow(usersLength + 1), ...this.state.users]
+      transactions: [
+        generateRow(transactionsLength + 1),
+        ...this.state.transactions
+      ]
     });
   }
 
@@ -62,17 +79,33 @@ export class Table extends React.Component {
         sort: true,
         sortCaret,
         formatter: cell => {
-          const color = status => {
+          const text = status => {
             const map = {
-              Pago: "success",
-              Pendente: "danger",
-              Aguardando: "warning",
-              Desconhecido: "secondary"
+              processing: "Processando",
+              authorized: "Autorizado",
+              paid: "Pago",
+              refunded: "Reembolsado",
+              waiting_payment: "Aguardando",
+              pending_refund: "Pendente",
+              refused: "Recusado"
             };
             return map[status];
           };
 
-          return <Badge color={color(cell)}>{cell}</Badge>;
+          const color = status => {
+            const map = {
+              processing: "secondary",
+              authorized: "warning",
+              paid: "success",
+              refunded: "success",
+              waiting_payment: "warning",
+              pending_refund: "danger",
+              refused: "danger"
+            };
+            return map[status];
+          };
+
+          return <Badge color={color(cell)}>{text(cell)}</Badge>;
         }
       },
       {
@@ -85,22 +118,35 @@ export class Table extends React.Component {
         }
       },
       {
-        dataField: "name",
+        dataField: "customer",
         text: "Nome",
         sort: true,
-        sortCaret
+        sortCaret,
+        formatter: cell => {
+          return cell && cell.name ? cell.name : "";
+        }
       },
       {
-        dataField: "email",
+        dataField: "customer",
         text: "Email",
         sort: true,
-        sortCaret
+        sortCaret,
+        formatter: cell => {
+          return cell && cell.email ? cell.email : "";
+        }
       },
       {
-        dataField: "payment",
+        dataField: "payment_method",
         text: "Forma de Pagamento",
         sort: true,
-        sortCaret
+        sortCaret,
+        formatter: cell => {
+          const type = {
+            credit_card: "Cartão de Crédito",
+            boleto: "Boleto"
+          };
+          return type[cell];
+        }
       },
       {
         dataField: "amount",
@@ -173,7 +219,7 @@ export class Table extends React.Component {
     return (
       <ToolkitProvider
         keyField="id"
-        data={this.state.users}
+        data={this.state.transactions}
         columns={columnDefs}
         search
         exportCSV

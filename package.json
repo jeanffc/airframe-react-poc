@@ -63,6 +63,7 @@
     "moment": "^2.24.0",
     "node-fetch": "^2.6.0",
     "numeral": "^2.0.6",
+    "pagarme": "^4.5.3",
     "prop-types": "^15.7.2",
     "query-string": "^6.7.0",
     "rc-slider": "^8.6.13",
