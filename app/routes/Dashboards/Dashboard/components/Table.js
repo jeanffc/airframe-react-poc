@@ -109,12 +109,13 @@ export class Table extends React.Component {
         }
       },
       {
-        dataField: "date",
+        dataField: "date_created",
         text: "Data",
         sort: true,
         sortCaret,
         formatter: cell => {
-          return moment(cell).format("DD-MMM-YYYY");
+          moment.locale("pt-br");
+          return moment(cell).format("DD/MM/YYYY");
         }
       },
       {
@@ -188,14 +189,22 @@ export class Table extends React.Component {
           <Col md={6}>
             <dl className="row">
               <dt className="col-sm-6 text-right">Nome:</dt>
-              <dd className="col-sm-6">{row.name}</dd>
+              <dd className="col-sm-6">{row.customer.name}</dd>
+
+              <dt className="col-sm-6 text-right">Email:</dt>
+              <dd className="col-sm-6">{row.customer.email}</dd>
             </dl>
           </Col>
           <Col md={6}>
             <dl className="row">
-              <dt className="col-sm-6 text-right">Data:</dt>
+              <dt className="col-sm-6 text-right">Data de criação:</dt>
               <dd className="col-sm-6">
-                {moment(row.date).format("DD-MMM-YYYY")}
+                {moment(row.date_created).format("DD/MM/YYYY")}
+              </dd>
+
+              <dt className="col-sm-6 text-right">Data de atualização:</dt>
+              <dd className="col-sm-6">
+                {moment(row.date_updated).format("DD/MM/YYYY")}
               </dd>
             </dl>
           </Col>
