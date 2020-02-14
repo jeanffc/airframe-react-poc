@@ -156,7 +156,7 @@ export class Table extends React.Component {
         sortCaret,
         formatter: (cell, row) => (
           <span>
-            {row.currency}
+            <i className="fa fa-fw fa-dollar text-muted" key="cur_usd"></i>
             {_.isNumber(cell) && (cell / 100).toFixed(2)}
           </span>
         )
