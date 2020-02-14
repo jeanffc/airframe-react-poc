@@ -157,7 +157,7 @@ export class Table extends React.Component {
         formatter: (cell, row) => (
           <span>
             {row.currency}
-            {_.isNumber(cell) && cell.toFixed(2)}
+            {_.isNumber(cell) && (cell / 100).toFixed(2)}
           </span>
         )
       }
