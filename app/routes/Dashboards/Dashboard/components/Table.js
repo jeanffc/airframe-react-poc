@@ -21,6 +21,7 @@ import { CustomSizePerPageButton } from "./CustomSizePerPageButton";
 import { CustomPaginationTotal } from "./CustomPaginationTotal";
 import { randomArray, randomAvatar } from "./../../../../utilities";
 
+import axios from "axios";
 const pagarme = require("pagarme");
 
 const generateRow = id => ({
@@ -44,18 +45,53 @@ export class Table extends React.Component {
     super(props);
 
     this.state = {
-      transactions: _.times(50, generateRow)
+      transactions: _.times(50, generateRow),
+      transactions_total: 50
     };
   }
 
   async componentDidMount() {
+    // pagarme.client
+    //   .connect({ api_key: "ak_test_TkP0pqMRsXUT4IcwREFujs2qoivCqB" })
+    //   .then(client => client.transactions.all())
+    //   .then(transactions => {
+    //     console.log(transactions);
+    //     this.setState({
+    //       transactions: transactions
+    //     });
+    //   });
+
     pagarme.client
       .connect({ api_key: "ak_test_TkP0pqMRsXUT4IcwREFujs2qoivCqB" })
-      .then(client => client.transactions.all())
-      .then(transactions => {
-        console.log(transactions);
+      .then(client =>
+        client.search({
+          type: "transaction",
+          query: {
+            filtered: {
+              query: { match_all: {} },
+              filter: {}
+            },
+            sort: [
+              {
+                date_created: { order: "desc" }
+              }
+            ],
+            size: 999,
+            from: 0
+          }
+        })
+      )
+      .then(result => {
+        console.log("RESULTS: ", result);
+
+        const sources = result.hits.hits.map(item => {
+          return item._source;
+        });
         this.setState({
-          transactions: transactions
+          transactions: sources
+        });
+        this.setState({
+          transactions_total: result.hits.total
         });
       });
   }
