@@ -87,6 +87,21 @@ export class Table extends React.Component {
         const sources = result.hits.hits.map(item => {
           return item._source;
         });
+
+        sources.map(item => {
+          console.log(item);
+          item.name = item.customer.name;
+          item.email = item.customer.email;
+          item.date_created = moment(item.date_created).format("DD/MM/YYYY");
+          item.payment_method =
+            item.payment_method == "credit_card"
+              ? "Cartão de Crédito"
+              : "Boleto";
+          item.amount =
+            _.isNumber(item.amount) && (item.amount / 100).toFixed(2);
+          return item;
+        });
+
         this.setState({
           transactions: sources
         });
@@ -148,42 +163,42 @@ export class Table extends React.Component {
         dataField: "date_created",
         text: "Data",
         sort: true,
-        sortCaret,
-        formatter: cell => {
-          moment.locale("pt-br");
-          return moment(cell).format("DD/MM/YYYY");
-        }
+        sortCaret
+        // formatter: cell => {
+        //   moment.locale("pt-br");
+        //   return moment(cell).format("DD/MM/YYYY");
+        // }
       },
       {
-        dataField: "customer",
+        dataField: "name",
         text: "Nome",
         sort: true,
-        sortCaret,
-        formatter: cell => {
-          return cell && cell.name ? cell.name : "";
-        }
+        sortCaret
+        // formatter: cell => {
+        //   return cell && cell.name ? cell.name : "";
+        // }
       },
       {
-        dataField: "customer",
+        dataField: "email",
         text: "Email",
         sort: true,
-        sortCaret,
-        formatter: cell => {
-          return cell && cell.email ? cell.email : "";
-        }
+        sortCaret
+        // formatter: cell => {
+        //   return cell && cell.email ? cell.email : "";
+        // }
       },
       {
         dataField: "payment_method",
         text: "Forma de Pagamento",
         sort: true,
-        sortCaret,
-        formatter: cell => {
-          const type = {
-            credit_card: "Cartão de Crédito",
-            boleto: "Boleto"
-          };
-          return type[cell];
-        }
+        sortCaret
+        // formatter: cell => {
+        //   const type = {
+        //     credit_card: "Cartão de Crédito",
+        //     boleto: "Boleto"
+        //   };
+        //   return type[cell];
+        // }
       },
       {
         dataField: "amount",
@@ -193,7 +208,7 @@ export class Table extends React.Component {
         formatter: (cell, row) => (
           <span>
             <i className="fa fa-fw fa-dollar text-muted" key="cur_usd"></i>
-            {_.isNumber(cell) && (cell / 100).toFixed(2)}
+            {cell}
           </span>
         )
       }
@@ -225,10 +240,10 @@ export class Table extends React.Component {
           <Col md={6}>
             <dl className="row">
               <dt className="col-sm-6 text-right">Nome:</dt>
-              <dd className="col-sm-6">{row.customer.name}</dd>
+              <dd className="col-sm-6">{row.name}</dd>
 
               <dt className="col-sm-6 text-right">Email:</dt>
-              <dd className="col-sm-6">{row.customer.email}</dd>
+              <dd className="col-sm-6">{row.email}</dd>
             </dl>
           </Col>
           <Col md={6}>
