@@ -17,16 +17,18 @@ import {
 import { HeaderAuth } from "../../components/Pages/HeaderAuth";
 import { FooterAuth } from "../../components/Pages/FooterAuth";
 
+import api from "../../../services/api";
+
 class Login extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       email: null,
-      email_invalid: false,
+      email_valid: null,
       password: null,
-      password_invalid: false,
-      remember_password: false,
+      password_valid: null,
+      remember_password: null,
       error: null
     };
   }
@@ -39,19 +41,19 @@ class Login extends Component {
     e.preventDefault();
     const { email, password } = this.state;
 
-    if (!email) {
-      this.setState({ email_invalid: true });
+    if (email) {
+      this.setState({ email_valid: true });
     } else {
-      this.setState({ email_invalid: false });
+      this.setState({ email_valid: false });
     }
 
-    if (!password) {
-      this.setState({ password_invalid: true });
+    if (password) {
+      this.setState({ password_valid: true });
     } else {
-      this.setState({ password_invalid: false });
+      this.setState({ password_valid: false });
     }
 
-    if (email || password) {
+    if (email && password) {
       this.props.history.push("/dashboards/dashboard");
       // try {
       //   const response = await api.post("/sessions", { email, password });
@@ -84,7 +86,7 @@ class Login extends Component {
                 placeholder="email@email.com"
                 className="bg-white"
                 onChange={e => this.setState({ email: e.target.value })}
-                invalid={this.state.email_invalid}
+                invalid={this.state.email_valid == false}
               />
               <FormFeedback>
                 Ops! Preencha seu e-mail corretamente.
@@ -102,7 +104,7 @@ class Login extends Component {
                 placeholder="senha"
                 className="bg-white"
                 onChange={e => this.setState({ password: e.target.value })}
-                invalid={this.state.password_invalid}
+                invalid={this.state.password_valid == false}
               />
               <FormFeedback>Ops! Preencha sua senha corretamente.</FormFeedback>
             </FormGroup>
