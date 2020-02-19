@@ -15,10 +15,9 @@ export class Dashboard extends React.Component {
     return (
       <React.Fragment>
         <Container>
-          <HeaderMain title="Dashboard" className="mb-5 mt-4" />
+          <HeaderMain title="Transações" className="mb-5 mt-4" />
           <Row className="mb-5">
             <Col>
-              {/* <AdvancedTableB /> */}
               <Table />
             </Col>
           </Row>
