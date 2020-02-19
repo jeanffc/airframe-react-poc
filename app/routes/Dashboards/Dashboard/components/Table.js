@@ -249,14 +249,7 @@ export class Table extends React.Component {
           <Col md={6}>
             <dl className="row">
               <dt className="col-sm-6 text-right">Data de criação:</dt>
-              <dd className="col-sm-6">
-                {moment(row.date_created).format("DD/MM/YYYY")}
-              </dd>
-
-              <dt className="col-sm-6 text-right">Data de atualização:</dt>
-              <dd className="col-sm-6">
-                {moment(row.date_updated).format("DD/MM/YYYY")}
-              </dd>
+              <dd className="col-sm-6">{row.date_created}</dd>
             </dl>
           </Col>
         </Row>
