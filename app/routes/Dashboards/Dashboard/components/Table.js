@@ -67,9 +67,10 @@ export class Table extends React.Component {
         client.search({
           type: "transaction",
           query: {
-            filtered: {
-              query: { match_all: {} },
-              filter: {}
+            filter: {
+              term: {
+                "metadata.author_id": 1
+              }
             },
             sort: [
               {
@@ -89,7 +90,6 @@ export class Table extends React.Component {
         });
 
         sources.map(item => {
-          console.log(item);
           item.name = item.customer.name;
           item.email = item.customer.email;
           item.date_created = moment(item.date_created).format("DD/MM/YYYY");
