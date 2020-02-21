@@ -18,6 +18,7 @@ import { HeaderAuth } from "../../components/Pages/HeaderAuth";
 import { FooterAuth } from "../../components/Pages/FooterAuth";
 
 import api from "../../../services/api";
+import { login, author } from "../../../services/auth";
 
 class Login extends Component {
   constructor(props) {
@@ -29,7 +30,8 @@ class Login extends Component {
       password: null,
       password_valid: null,
       remember_password: null,
-      error: null
+      error: null,
+      loading: false
     };
   }
 
@@ -54,17 +56,24 @@ class Login extends Component {
     }
 
     if (email && password) {
-      this.props.history.push("/dashboards/dashboard");
-      // try {
-      //   const response = await api.post("/sessions", { email, password });
-      //   login(response.data.token);
-      //   this.props.history.push("/app");
-      // } catch (err) {
-      //   this.setState({
-      //     error:
-      //       "Houve um problema com o login, verifique suas credenciais. T.T"
-      //   });
-      // }
+      // this.props.history.push("/dashboards/dashboard");
+      try {
+        const response = await api.post("/sessions", { email, password });
+        console.log("RESPONSE: ", response);
+        if (response.data.token) {
+          login(response.data.token);
+          author(response.data.user.author_id);
+          this.props.history.push("/dashboards/dashboard");
+        } else {
+          this.setState({ email_valid: false });
+          this.setState({ password_valid: false });
+        }
+      } catch (err) {
+        this.setState({
+          error:
+            "Houve um problema com o login, verifique suas credenciais. T.T"
+        });
+      }
     }
   };
 
