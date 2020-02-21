@@ -128,7 +128,7 @@ export const RoutedContent = () => {
     <Switch>
       <Redirect from="/" to="/pages/login" exact />
 
-      <Route path="/dashboards/dashboard" exact component={Dashboard} />
+      <PrivateRoute path="/dashboards/dashboard" exact component={Dashboard} />
       <Route path="/dashboards/analytics" exact component={Analytics} />
       <Route path="/dashboards/projects" exact component={ProjectsDashboard} />
       <Route path="/dashboards/system" exact component={System} />
