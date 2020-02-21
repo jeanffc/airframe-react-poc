@@ -6,6 +6,8 @@ import moment from "moment";
 import _ from "lodash";
 import faker from "faker/locale/en_US";
 
+import { getAuthor } from "../../../../services/auth";
+
 import {
   Avatar,
   Badge,
@@ -45,8 +47,8 @@ export class Table extends React.Component {
     super(props);
 
     this.state = {
-      transactions: _.times(50, generateRow),
-      transactions_total: 50
+      transactions: _.times(10, generateRow),
+      transactions_total: 10
     };
   }
 
@@ -69,7 +71,7 @@ export class Table extends React.Component {
           query: {
             filter: {
               term: {
-                "metadata.author_id": 1
+                "metadata.author_id": getAuthor()
               }
             },
             sort: [
