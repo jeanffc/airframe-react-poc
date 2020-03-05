@@ -145,8 +145,8 @@ class Login extends Component {
           {/* END Form */}
           {/* START Bottom Links */}
           <div className="d-flex mb-5">
-            <Link to="/pages/forgotpassword" className="text-decoration-none">
-              Esqueci a senha
+            <Link to="/pages/forgot-password" className="text-decoration-none">
+              Esqueci minha senha
             </Link>
             <Link to="/pages/register" className="ml-auto text-decoration-none">
               Cadastrar
