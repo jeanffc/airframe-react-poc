@@ -15,7 +15,48 @@ import {
 import { HeaderAuth } from "../../components/Pages/HeaderAuth";
 import { FooterAuth } from "../../components/Pages/FooterAuth";
 
+import api from "../../../services/api";
+
 class ForgotPassword extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: null,
+      email_valid: null,
+      error: null,
+      loading: false
+    };
+  }
+
+  componentDidUpdate() {
+    console.log(this.state);
+  }
+
+  handleResetPassword = async e => {
+    console.log("handleResetPassword()");
+    e.preventDefault();
+    const { email } = this.state;
+
+    if (email) {
+      this.setState({ email_valid: true });
+    } else {
+      this.setState({ email_valid: false });
+    }
+
+    if (email) {
+      try {
+        const response = await api.post("/forgot_password", { email });
+        console.log("RESPONSE: ", response);
+      } catch (err) {
+        this.setState({
+          error:
+            "Ocorreu um problema com o recuperar senha, verifique suas credenciais e tente novamente."
+        });
+      }
+    }
+  };
+
   render() {
     return (
       <EmptyLayout>
@@ -33,6 +74,8 @@ class ForgotPassword extends Component {
                 id="emailAdress"
                 placeholder="email@email.com"
                 className="bg-white"
+                onChange={e => this.setState({ email: e.target.value })}
+                invalid={this.state.email_valid == false}
               />
               <FormText color="muted">
                 Não compartilhamos seu email com ninguém.

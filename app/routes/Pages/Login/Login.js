@@ -56,7 +56,6 @@ class Login extends Component {
     }
 
     if (email && password) {
-      // this.props.history.push("/dashboards/dashboard");
       try {
         const response = await api.post("/sessions", { email, password });
         console.log("RESPONSE: ", response);
