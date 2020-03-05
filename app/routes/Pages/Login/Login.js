@@ -69,9 +69,11 @@ class Login extends Component {
           this.setState({ password_valid: false });
         }
       } catch (err) {
+        this.setState({ email_valid: false });
+        this.setState({ password_valid: false });
         this.setState({
           error:
-            "Houve um problema com o login, verifique suas credenciais. T.T"
+            "Ocorreu um problema com seu login, verifique suas credenciais e tente novamente."
         });
       }
     }
