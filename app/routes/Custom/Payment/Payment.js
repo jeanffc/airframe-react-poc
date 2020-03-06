@@ -2,15 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import faker from "faker/locale/en_US";
 import _ from "lodash";
-import { Container, Row, Col } from "./../../../components";
+import { Container, Row, Col } from "../../../components";
 import { Table } from "./components/Table";
 import { AdvancedTableB } from "../../Tables/ExtendedTable/components";
 
 import { HeaderMain } from "../../components/HeaderMain";
 
-import classes from "./Dashboard.scss";
+import classes from "./Payment.scss";
 
-export class Dashboard extends React.Component {
+export class Payment extends React.Component {
   render() {
     return (
       <React.Fragment>

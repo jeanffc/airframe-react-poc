@@ -41,6 +41,7 @@ class Login extends Component {
 
   handleLogin = async e => {
     e.preventDefault();
+    this.setState({ loading: true });
     const { email, password } = this.state;
 
     if (email) {
@@ -62,7 +63,7 @@ class Login extends Component {
         if (response.data.token) {
           login(response.data.token);
           author(response.data.user.author_id);
-          this.props.history.push("/dashboards/dashboard");
+          this.props.history.push("/custom/payments");
         } else {
           this.setState({ email_valid: false });
           this.setState({ password_valid: false });
@@ -76,6 +77,8 @@ class Login extends Component {
         });
       }
     }
+
+    this.setState({ loading: false });
   };
 
   render() {
@@ -129,6 +132,7 @@ class Login extends Component {
             <ThemeConsumer>
               {({ color }) => (
                 <Button
+                  disabled={this.state.loading}
                   type="submit"
                   color={color}
                   block

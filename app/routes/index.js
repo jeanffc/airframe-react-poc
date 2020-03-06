@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from "react-router";
 import { isAuthenticated } from "../services/auth";
 
 // ----------- Pages Imports ---------------
-import Dashboard from "./Dashboards/Dashboard";
+import Payment from "./Custom/Payment";
 import Analytics from "./Dashboards/Analytics";
 import ProjectsDashboard from "./Dashboards/Projects";
 import System from "./Dashboards/System";
@@ -128,7 +128,9 @@ export const RoutedContent = () => {
     <Switch>
       <Redirect from="/" to="/pages/login" exact />
 
-      <PrivateRoute path="/dashboards/dashboard" exact component={Dashboard} />
+      <PrivateRoute path="/custom/payments" exact component={Payment} />
+      <PrivateRoute path="/custom/courses" exact component={Payment} />
+
       <Route path="/dashboards/analytics" exact component={Analytics} />
       <Route path="/dashboards/projects" exact component={ProjectsDashboard} />
       <Route path="/dashboards/system" exact component={System} />
