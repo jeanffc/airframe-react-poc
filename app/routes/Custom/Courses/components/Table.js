@@ -28,13 +28,9 @@ const pagarme = require("pagarme");
 
 const generateRow = id => ({
   id,
-  status: randomArray(["paid", "waiting_payment"]),
-  name: faker.name.findName(),
-  email: faker.internet.email(),
-  payment_method: randomArray(["credit_card", "boleto"]),
-  amount: 500 + Math.random() * 1000,
-  currency: <i className="fa fa-fw fa-dollar text-muted" key="cur_usd"></i>,
-  date: faker.date.recent()
+  available: randomArray([true, false]),
+  title: faker.name.findName(),
+  summary: faker.lorem.sentence(8)
 });
 
 const sortCaret = order => {
@@ -47,172 +43,45 @@ export class Table extends React.Component {
     super(props);
 
     this.state = {
-      transactions: _.times(10, generateRow),
-      transactions_total: 10
+      courses: _.times(10, generateRow)
     };
   }
 
-  async componentDidMount() {
-    // pagarme.client
-    //   .connect({ api_key: "ak_test_TkP0pqMRsXUT4IcwREFujs2qoivCqB" })
-    //   .then(client => client.transactions.all())
-    //   .then(transactions => {
-    //     console.log(transactions);
-    //     this.setState({
-    //       transactions: transactions
-    //     });
-    //   });
-
-    pagarme.client
-      .connect({ api_key: "ak_test_TkP0pqMRsXUT4IcwREFujs2qoivCqB" })
-      .then(client =>
-        client.search({
-          type: "transaction",
-          query: {
-            filter: {
-              term: {
-                "metadata.author_id": getAuthor()
-              }
-            },
-            sort: [
-              {
-                date_created: { order: "desc" }
-              }
-            ],
-            size: 999,
-            from: 0
-          }
-        })
-      )
-      .then(result => {
-        console.log("RESULTS: ", result);
-
-        const sources = result.hits.hits.map(item => {
-          return item._source;
-        });
-
-        sources.map(item => {
-          item.name = item.customer.name;
-          item.email = item.customer.email;
-          item.date_created = moment(item.date_created).format("DD/MM/YYYY");
-          item.payment_method =
-            item.payment_method == "credit_card"
-              ? "Cartão de Crédito"
-              : "Boleto";
-          item.amount =
-            _.isNumber(item.amount) && (item.amount / 100).toFixed(2);
-          return item;
-        });
-
-        this.setState({
-          transactions: sources
-        });
-        this.setState({
-          transactions_total: result.hits.total
-        });
-      });
-  }
+  async componentDidMount() {}
 
   handleAddRow() {
-    const transactionsLength = this.state.transactions.length;
+    const coursesLength = this.state.courses.length;
 
     this.setState({
-      transactions: [
-        generateRow(transactionsLength + 1),
-        ...this.state.transactions
-      ]
+      courses: [generateRow(coursesLength + 1), ...this.state.courses]
     });
   }
 
   createColumnDefinitions() {
     return [
       {
-        dataField: "status",
-        text: "Status",
-        sort: true,
-        sortCaret,
-        formatter: cell => {
-          const text = status => {
-            const map = {
-              processing: "Processando",
-              authorized: "Autorizado",
-              paid: "Pago",
-              refunded: "Reembolsado",
-              waiting_payment: "Aguardando",
-              pending_refund: "Pendente",
-              refused: "Recusado"
-            };
-            return map[status];
-          };
-
-          const color = status => {
-            const map = {
-              processing: "secondary",
-              authorized: "warning",
-              paid: "success",
-              refunded: "success",
-              waiting_payment: "warning",
-              pending_refund: "danger",
-              refused: "danger"
-            };
-            return map[status];
-          };
-
-          return <Badge color={color(cell)}>{text(cell)}</Badge>;
-        }
-      },
-      {
-        dataField: "date_created",
-        text: "Data",
+        dataField: "id",
+        text: "Id",
         sort: true,
         sortCaret
-        // formatter: cell => {
-        //   moment.locale("pt-br");
-        //   return moment(cell).format("DD/MM/YYYY");
-        // }
       },
       {
-        dataField: "name",
+        dataField: "available",
+        text: "Disponível",
+        sort: true,
+        sortCaret
+      },
+      {
+        dataField: "title",
         text: "Nome",
         sort: true,
         sortCaret
-        // formatter: cell => {
-        //   return cell && cell.name ? cell.name : "";
-        // }
       },
       {
-        dataField: "email",
-        text: "Email",
+        dataField: "summary",
+        text: "Resumo",
         sort: true,
         sortCaret
-        // formatter: cell => {
-        //   return cell && cell.email ? cell.email : "";
-        // }
-      },
-      {
-        dataField: "payment_method",
-        text: "Forma de Pagamento",
-        sort: true,
-        sortCaret
-        // formatter: cell => {
-        //   const type = {
-        //     credit_card: "Cartão de Crédito",
-        //     boleto: "Boleto"
-        //   };
-        //   return type[cell];
-        // }
-      },
-      {
-        dataField: "amount",
-        text: "Valor",
-        sort: true,
-        sortCaret,
-        formatter: (cell, row) => (
-          <span>
-            <i className="fa fa-fw fa-dollar text-muted" key="cur_usd"></i>
-            {cell}
-          </span>
-        )
       }
     ];
   }
@@ -242,16 +111,7 @@ export class Table extends React.Component {
           <Col md={6}>
             <dl className="row">
               <dt className="col-sm-6 text-right">Nome:</dt>
-              <dd className="col-sm-6">{row.name}</dd>
-
-              <dt className="col-sm-6 text-right">Email:</dt>
-              <dd className="col-sm-6">{row.email}</dd>
-            </dl>
-          </Col>
-          <Col md={6}>
-            <dl className="row">
-              <dt className="col-sm-6 text-right">Data de criação:</dt>
-              <dd className="col-sm-6">{row.date_created}</dd>
+              <dd className="col-sm-6">{row.title}</dd>
             </dl>
           </Col>
         </Row>
@@ -274,7 +134,7 @@ export class Table extends React.Component {
     return (
       <ToolkitProvider
         keyField="id"
-        data={this.state.transactions}
+        data={this.state.courses}
         columns={columnDefs}
         search
         exportCSV
