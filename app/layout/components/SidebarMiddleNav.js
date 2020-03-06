@@ -4,8 +4,19 @@ import { SidebarMenu } from "./../../components";
 
 export const SidebarMiddleNav = () => (
   <SidebarMenu>
-    <SidebarMenu.Item title="Pagamentos" to="/custom/payments" exact />
-    <SidebarMenu.Item title="Cursos" to="/custom/courses" exact />
+    <SidebarMenu.Item
+      // icon={<i className="fa fa-fw fa-home"></i>}
+      title="Financeiro"
+    >
+      <SidebarMenu.Item title="Pagamentos" to="/custom/payments" exact />
+    </SidebarMenu.Item>
+
+    <SidebarMenu.Item
+      // icon={<i className="fa fa-fw fa-home"></i>}
+      title="Couteúdos"
+    >
+      <SidebarMenu.Item title="Cursos" to="/custom/courses" exact />
+    </SidebarMenu.Item>
 
     <SidebarMenu.Item
       icon={<i className="fa fa-fw fa-home"></i>}
