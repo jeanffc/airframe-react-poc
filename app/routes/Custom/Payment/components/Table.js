@@ -62,55 +62,58 @@ export class Table extends React.Component {
     //       transactions: transactions
     //     });
     //   });
+    try {
+      pagarme.client
+        .connect({ api_key: "ak_test_TkP0pqMRsXUT4IcwREFujs2qoivCqB" })
+        .then(client =>
+          client.search({
+            type: "transaction",
+            query: {
+              filter: {
+                term: {
+                  "metadata.author_id": getAuthor()
+                }
+              },
+              sort: [
+                {
+                  date_created: { order: "desc" }
+                }
+              ],
+              size: 999,
+              from: 0
+            }
+          })
+        )
+        .then(result => {
+          console.log("RESULTS: ", result);
 
-    pagarme.client
-      .connect({ api_key: "ak_test_TkP0pqMRsXUT4IcwREFujs2qoivCqB" })
-      .then(client =>
-        client.search({
-          type: "transaction",
-          query: {
-            filter: {
-              term: {
-                "metadata.author_id": getAuthor()
-              }
-            },
-            sort: [
-              {
-                date_created: { order: "desc" }
-              }
-            ],
-            size: 999,
-            from: 0
-          }
-        })
-      )
-      .then(result => {
-        console.log("RESULTS: ", result);
+          const sources = result.hits.hits.map(item => {
+            return item._source;
+          });
 
-        const sources = result.hits.hits.map(item => {
-          return item._source;
-        });
+          sources.map(item => {
+            item.name = item.customer.name;
+            item.email = item.customer.email;
+            item.date_created = moment(item.date_created).format("DD/MM/YYYY");
+            item.payment_method =
+              item.payment_method == "credit_card"
+                ? "Cartão de Crédito"
+                : "Boleto";
+            item.amount =
+              _.isNumber(item.amount) && (item.amount / 100).toFixed(2);
+            return item;
+          });
 
-        sources.map(item => {
-          item.name = item.customer.name;
-          item.email = item.customer.email;
-          item.date_created = moment(item.date_created).format("DD/MM/YYYY");
-          item.payment_method =
-            item.payment_method == "credit_card"
-              ? "Cartão de Crédito"
-              : "Boleto";
-          item.amount =
-            _.isNumber(item.amount) && (item.amount / 100).toFixed(2);
-          return item;
+          this.setState({
+            transactions: sources
+          });
+          this.setState({
+            transactions_total: result.hits.total
+          });
         });
-
-        this.setState({
-          transactions: sources
-        });
-        this.setState({
-          transactions_total: result.hits.total
-        });
-      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   handleAddRow() {

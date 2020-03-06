@@ -6,6 +6,7 @@ import moment from "moment";
 import _ from "lodash";
 import faker from "faker/locale/en_US";
 
+import api from "../../../../services/api";
 import { getAuthor } from "../../../../services/auth";
 
 import {
@@ -43,11 +44,24 @@ export class Table extends React.Component {
     super(props);
 
     this.state = {
-      courses: _.times(10, generateRow)
+      author: getAuthor() || 0,
+      courses: []
+      // courses: _.times(10, generateRow)
     };
   }
 
-  async componentDidMount() {}
+  async componentDidMount() {
+    try {
+      const response = await api.get("/courses", this.state.author);
+      if (response.data) {
+        this.setState({
+          courses: response.data
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   handleAddRow() {
     const coursesLength = this.state.courses.length;
@@ -55,6 +69,10 @@ export class Table extends React.Component {
     this.setState({
       courses: [generateRow(coursesLength + 1), ...this.state.courses]
     });
+  }
+
+  handleModelEdit(row) {
+    console.log("hello, ", row);
   }
 
   createColumnDefinitions() {
@@ -82,6 +100,33 @@ export class Table extends React.Component {
         text: "Resumo",
         sort: true,
         sortCaret
+      },
+      {
+        text: "Ações",
+        dataField: "",
+        formatter: (cell, row) => {
+          return (
+            <div>
+              <button
+                type="button"
+                className="btn btn-outline-primary btn-sm ts-buttom"
+                size="sm"
+                onClick={() => {
+                  this.handleModelEdit(row);
+                }}
+              >
+                Editar
+              </button>
+              <button
+                type="button"
+                className="btn btn-outline-danger btn-sm ml-2 ts-buttom"
+                size="sm"
+              >
+                Deletar
+              </button>
+            </div>
+          );
+        }
       }
     ];
   }
@@ -104,6 +149,12 @@ export class Table extends React.Component {
         <CustomPaginationTotal {...{ from, to, size }} />
       )
     });
+
+    // const rowEvents = {
+    //   onClick: (e, row, rowIndex) => {
+    //     console.log("clicked");
+    //   }
+    // };
 
     const expandRow = {
       renderer: row => (
@@ -160,7 +211,8 @@ export class Table extends React.Component {
               classes="table-responsive-lg"
               pagination={paginationDef}
               bordered={false}
-              expandRow={expandRow}
+              // expandRow={expandRow}
+              // rowEvents={rowEvents}
               responsive
               hover
               {...props.baseProps}
