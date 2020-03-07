@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Component } from "react";
+import { Link, useHistory, withRouter } from "react-router-dom";
 import BootstrapTable from "react-bootstrap-table-next";
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
 import paginationFactory from "react-bootstrap-table2-paginator";
@@ -39,7 +40,7 @@ const sortCaret = order => {
   if (order) return <i className={`fa fa-fw text-muted fa-sort-${order}`}></i>;
 };
 
-export class Table extends React.Component {
+class Table extends React.Component {
   constructor(props) {
     super(props);
 
@@ -71,9 +72,10 @@ export class Table extends React.Component {
     });
   }
 
-  handleModelEdit(row) {
-    console.log("hello, ", row);
-  }
+  handleModelEdit = async row => {
+    console.log("row1: ", row);
+    this.props.history.push(`/custom/courses/${row.id}`, { row: row });
+  };
 
   createColumnDefinitions() {
     return [
@@ -107,8 +109,10 @@ export class Table extends React.Component {
         formatter: (cell, row) => {
           return (
             <div>
-              <button
+              <Button
                 type="button"
+                outline
+                color="primary"
                 className="btn btn-outline-primary btn-sm ts-buttom"
                 size="sm"
                 onClick={() => {
@@ -116,14 +120,16 @@ export class Table extends React.Component {
                 }}
               >
                 Editar
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
+                outline
+                color="danger"
                 className="btn btn-outline-danger btn-sm ml-2 ts-buttom"
                 size="sm"
               >
                 Deletar
-              </button>
+              </Button>
             </div>
           );
         }
@@ -223,3 +229,7 @@ export class Table extends React.Component {
     );
   }
 }
+
+const TableHelper = withRouter(Table);
+
+export { TableHelper as Table };
