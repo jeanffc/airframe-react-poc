@@ -72,9 +72,13 @@ class Table extends React.Component {
     });
   }
 
-  handleModelEdit = async row => {
-    console.log("row1: ", row);
-    this.props.history.push(`/custom/courses/${row.id}`, { row: row });
+  handleModelEdit = async course => {
+    console.log("course: ", course);
+    this.props.history.push(`/custom/courses/${course.id}`);
+    // this.props.history.push({
+    //   pathname: `/custom/courses/${course.id}`,
+    //   state: { course }
+    // });
   };
 
   createColumnDefinitions() {

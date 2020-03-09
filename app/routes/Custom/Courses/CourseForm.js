@@ -14,25 +14,60 @@ import {
   FormGroup,
   Label,
   Input,
-  FormText
+  FormText,
+  Button
 } from "./../../../components";
 
 import { HeaderMain } from "../../components/HeaderMain";
 import { HeaderDemo } from "../../components/HeaderDemo";
+
+import api from "../../../services/api";
+import { getAuthor } from "../../../services/auth";
 
 class CourseForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      course: {
+        id: 0,
+        available: false,
+        // author_id: 0,
+        // author: "",
+        title: "",
+        summary: "",
+        description: "",
+        topics_json: "",
+        skills_json: "",
+        image_url: "",
+        price: 0
+      },
       loading: false
     };
-
-    componentDidUpdate() {
-      console.log(this.state);
-    }
-
   }
+
+  componentDidUpdate() {
+    console.log(this.state);
+  }
+
+  async componentDidMount() {
+    // console.log("PARAMS: ", this.props.location.state.course);
+    console.log("LOCATION: ", this.props.location);
+    console.log("PARAM: ", this.props.location.pathname.split("/").pop());
+    const param = this.props.location.pathname.split("/").pop();
+    try {
+      const response = await api.get(`/courses/${param}`);
+      console.log("RESPONSE: ", response.data);
+      if (response.data) {
+        this.setState({
+          course: response.data
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -68,13 +103,192 @@ class CourseForm extends Component {
                     {/* START Input */}
                     <FormGroup row>
                       <Label for="input" sm={3}>
-                        Input
+                        Id
                       </Label>
                       <Col sm={9}>
-                        <Input type="" name="" id="input" placeholder="" />
+                        <Input
+                          type=""
+                          name=""
+                          id="input"
+                          placeholder={this.state.course.id}
+                          disabled
+                          // value={this.state.course.id}
+                        />
                       </Col>
                     </FormGroup>
                     {/* END Input */}
+
+                    {/* START Input */}
+                    <FormGroup row>
+                      <Label for="input" sm={3}>
+                        Disponível
+                      </Label>
+                      <Col sm={9}>
+                        <CustomInput
+                          type="select"
+                          name="customSelect"
+                          id="country-selector-2"
+                          value={this.state.course.available}
+                        >
+                          <option value="">Selecione...</option>
+                          <option value="true">Sim</option>
+                          <option value="false">Não</option>
+                        </CustomInput>
+                      </Col>
+                    </FormGroup>
+                    {/* END Input */}
+
+                    {/* START Input */}
+                    <FormGroup row>
+                      <Label for="input" sm={3}>
+                        Nome
+                      </Label>
+                      <Col sm={9}>
+                        <Input
+                          type=""
+                          name=""
+                          id="input"
+                          placeholder=""
+                          value={this.state.course.title}
+                          onChange={e =>
+                            this.setState({
+                              course: {
+                                ...this.state.course,
+                                title: e.target.value
+                              }
+                            })
+                          }
+                        />
+                      </Col>
+                    </FormGroup>
+                    {/* END Input */}
+
+                    {/* START Input */}
+                    <FormGroup row>
+                      <Label for="input" sm={3}>
+                        Resumo
+                      </Label>
+                      <Col sm={9}>
+                        <Input
+                          type="textarea"
+                          name="text"
+                          id="message-1"
+                          placeholder="Enter Your Message..."
+                          className=""
+                          value={this.state.course.summary}
+                        />
+                      </Col>
+                    </FormGroup>
+                    {/* END Input */}
+
+                    {/* START Input */}
+                    <FormGroup row>
+                      <Label for="input" sm={3}>
+                        Descrição
+                      </Label>
+                      <Col sm={9}>
+                        <Input
+                          type="textarea"
+                          name="text"
+                          id="message-1"
+                          placeholder="Enter Your Message..."
+                          className=""
+                          value={this.state.course.description}
+                        />
+                      </Col>
+                    </FormGroup>
+                    {/* END Input */}
+
+                    {/* START Input */}
+                    <FormGroup row>
+                      <Label for="input" sm={3}>
+                        Tópicos
+                      </Label>
+                      <Col sm={9}>
+                        <Input
+                          type="textarea"
+                          name="text"
+                          id="message-1"
+                          placeholder="Enter Your Message..."
+                          className=""
+                          value={this.state.course.topics_json}
+                        />
+                      </Col>
+                    </FormGroup>
+                    {/* END Input */}
+
+                    {/* START Input */}
+                    <FormGroup row>
+                      <Label for="input" sm={3}>
+                        Habilidades
+                      </Label>
+                      <Col sm={9}>
+                        <Input
+                          type="textarea"
+                          name="text"
+                          id="message-1"
+                          placeholder="Enter Your Message..."
+                          className=""
+                          value={this.state.course.skills_json}
+                        />
+                      </Col>
+                    </FormGroup>
+                    {/* END Input */}
+
+                    {/* START Input */}
+                    <FormGroup row>
+                      <Label for="input" sm={3}>
+                        Imagem
+                      </Label>
+                      <Col sm={9}>
+                        <Input
+                          type=""
+                          name=""
+                          id="input"
+                          placeholder=""
+                          value={this.state.course.image_url}
+                        />
+                      </Col>
+                    </FormGroup>
+                    {/* END Input */}
+
+                    {/* START Input */}
+                    <FormGroup row>
+                      <Label for="input" sm={3}>
+                        Preço
+                      </Label>
+                      <Col sm={9}>
+                        <Input
+                          type=""
+                          name=""
+                          id="input"
+                          placeholder=""
+                          value={this.state.course.price}
+                        />
+                      </Col>
+                    </FormGroup>
+                    {/* END Input */}
+                    <div className="d-flex justify-content-end">
+                      <Button
+                        color="primary"
+                        className=""
+                        onClick={() => {
+                          console.log("clicked");
+                        }}
+                      >
+                        Salvar
+                      </Button>
+                      <Button
+                        color="danger"
+                        className="ml-2"
+                        onClick={() => {
+                          console.log("clicked");
+                          this.props.history.push(`/custom/courses/`);
+                        }}
+                      >
+                        Cancelar
+                      </Button>
+                    </div>
                   </Form>
                   {/* END Form */}
                 </CardBody>
