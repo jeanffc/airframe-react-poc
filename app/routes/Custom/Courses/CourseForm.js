@@ -32,7 +32,7 @@ class CourseForm extends Component {
       course: {
         id: 0,
         available: false,
-        // author_id: 0,
+        author_id: 0,
         // author: "",
         title: "",
         summary: "",
@@ -68,11 +68,48 @@ class CourseForm extends Component {
     }
   }
 
+  handleSave = async e => {
+    console.log("handleSave");
+    try {
+      const {
+        id,
+        available,
+        author_id,
+        title,
+        summary,
+        description,
+        topics_json,
+        skills_json,
+        image_url,
+        price
+      } = this.state.course;
+
+      const response = await api.put(`/courses/${id}`, {
+        available,
+        author_id,
+        title,
+        summary,
+        description,
+        topics_json,
+        skills_json,
+        image_url,
+        price
+      });
+      console.log("RESPONSE: ", response.data);
+      this.props.history.push(`/custom/courses/`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   render() {
     return (
       <React.Fragment>
         <Container>
-          <HeaderMain title={`Curso ${1}`} className="mb-5 mt-4" />
+          <HeaderMain
+            title={`Curso ${this.state.course.id}`}
+            className="mb-5 mt-4"
+          />
           {/* START Header 1 */}
           {/* <Row>
             <Col lg={12}>
@@ -121,6 +158,24 @@ class CourseForm extends Component {
                     {/* START Input */}
                     <FormGroup row>
                       <Label for="input" sm={3}>
+                        Autor
+                      </Label>
+                      <Col sm={9}>
+                        <Input
+                          type=""
+                          name=""
+                          id="input"
+                          placeholder={this.state.course.author_id}
+                          disabled
+                          // value={this.state.course.id}
+                        />
+                      </Col>
+                    </FormGroup>
+                    {/* END Input */}
+
+                    {/* START Input */}
+                    <FormGroup row>
+                      <Label for="input" sm={3}>
                         Disponível
                       </Label>
                       <Col sm={9}>
@@ -129,6 +184,14 @@ class CourseForm extends Component {
                           name="customSelect"
                           id="country-selector-2"
                           value={this.state.course.available}
+                          onChange={e =>
+                            this.setState({
+                              course: {
+                                ...this.state.course,
+                                available: e.target.value
+                              }
+                            })
+                          }
                         >
                           <option value="">Selecione...</option>
                           <option value="true">Sim</option>
@@ -176,6 +239,14 @@ class CourseForm extends Component {
                           placeholder="Enter Your Message..."
                           className=""
                           value={this.state.course.summary}
+                          onChange={e =>
+                            this.setState({
+                              course: {
+                                ...this.state.course,
+                                summary: e.target.value
+                              }
+                            })
+                          }
                         />
                       </Col>
                     </FormGroup>
@@ -194,6 +265,14 @@ class CourseForm extends Component {
                           placeholder="Enter Your Message..."
                           className=""
                           value={this.state.course.description}
+                          onChange={e =>
+                            this.setState({
+                              course: {
+                                ...this.state.course,
+                                description: e.target.value
+                              }
+                            })
+                          }
                         />
                       </Col>
                     </FormGroup>
@@ -212,6 +291,14 @@ class CourseForm extends Component {
                           placeholder="Enter Your Message..."
                           className=""
                           value={this.state.course.topics_json}
+                          onChange={e =>
+                            this.setState({
+                              course: {
+                                ...this.state.course,
+                                topics_json: e.target.value
+                              }
+                            })
+                          }
                         />
                       </Col>
                     </FormGroup>
@@ -230,6 +317,14 @@ class CourseForm extends Component {
                           placeholder="Enter Your Message..."
                           className=""
                           value={this.state.course.skills_json}
+                          onChange={e =>
+                            this.setState({
+                              course: {
+                                ...this.state.course,
+                                skills_json: e.target.value
+                              }
+                            })
+                          }
                         />
                       </Col>
                     </FormGroup>
@@ -247,6 +342,14 @@ class CourseForm extends Component {
                           id="input"
                           placeholder=""
                           value={this.state.course.image_url}
+                          onChange={e =>
+                            this.setState({
+                              course: {
+                                ...this.state.course,
+                                image_url: e.target.value
+                              }
+                            })
+                          }
                         />
                       </Col>
                     </FormGroup>
@@ -264,6 +367,14 @@ class CourseForm extends Component {
                           id="input"
                           placeholder=""
                           value={this.state.course.price}
+                          onChange={e =>
+                            this.setState({
+                              course: {
+                                ...this.state.course,
+                                price: e.target.value
+                              }
+                            })
+                          }
                         />
                       </Col>
                     </FormGroup>
@@ -274,6 +385,7 @@ class CourseForm extends Component {
                         className=""
                         onClick={() => {
                           console.log("clicked");
+                          this.handleSave();
                         }}
                       >
                         Salvar
