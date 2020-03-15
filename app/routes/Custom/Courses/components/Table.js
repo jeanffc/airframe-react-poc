@@ -112,7 +112,7 @@ class Table extends React.Component {
         dataField: "",
         formatter: (cell, row) => {
           return (
-            <div>
+            <div className="d-flex justify-content-end">
               <Button
                 type="button"
                 outline
