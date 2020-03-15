@@ -16,7 +16,11 @@ import {
   Button,
   ButtonGroup,
   Row,
-  Col
+  Col,
+  UncontrolledModal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
 } from "./../../../../components";
 import { CustomExportCSV } from "./CustomExportButton";
 import { CustomSearch } from "./CustomSearch";
@@ -81,6 +85,22 @@ class Table extends React.Component {
     // });
   };
 
+  handleModelDelete = async course => {
+    console.log("course: ", course);
+    try {
+      const response = await api.delete(`/courses/${course.id}`);
+      if (response.data) {
+        this.setState({
+          courses: this.state.courses.filter(obj => {
+            return obj.id != response.data.id;
+          })
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   createColumnDefinitions() {
     return [
       {
@@ -126,14 +146,46 @@ class Table extends React.Component {
                 Editar
               </Button>
               <Button
+                id={"modal" + row.id}
                 type="button"
                 outline
                 color="danger"
                 className="btn btn-outline-danger btn-sm ml-2 ts-buttom"
                 size="sm"
+                // onClick={() => {
+                //   this.handleModelDelete(row);
+                // }}
               >
-                Deletar
+                Excluir
               </Button>
+              <UncontrolledModal
+                target={"modal" + row.id}
+                className="modal-outline-danger"
+              >
+                <ModalHeader tag="h6">
+                  <span className="text-danger">Cuidado!</span>
+                </ModalHeader>
+                <ModalBody>
+                  Você tem certeza que quer excluir {row.title}?
+                </ModalBody>
+                <ModalFooter>
+                  <UncontrolledModal.Close
+                    color="danger"
+                    onPress={() => {
+                      this.handleModelDelete(row);
+                    }}
+                  >
+                    Excluir
+                  </UncontrolledModal.Close>
+                  <UncontrolledModal.Close
+                    color="link"
+                    className="text-danger"
+                    onPress={() => {}}
+                  >
+                    Cancelar
+                  </UncontrolledModal.Close>
+                </ModalFooter>
+              </UncontrolledModal>
             </div>
           );
         }
