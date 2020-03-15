@@ -133,6 +133,7 @@ export const RoutedContent = () => {
       <PrivateRoute path="/custom/payments" exact component={Payment} />
       <PrivateRoute path="/custom/courses" exact component={Courses} />
       <PrivateRoute path="/custom/courses/:id" exact component={CourseForm} />
+      <PrivateRoute path="/custom/courses/new" exact component={CourseForm} />
 
       <Route path="/dashboards/analytics" exact component={Analytics} />
       <Route path="/dashboards/projects" exact component={ProjectsDashboard} />
