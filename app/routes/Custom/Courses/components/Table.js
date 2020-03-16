@@ -69,11 +69,13 @@ class Table extends React.Component {
   }
 
   handleAddRow() {
-    const coursesLength = this.state.courses.length;
+    // const coursesLength = this.state.courses.length;
 
-    this.setState({
-      courses: [generateRow(coursesLength + 1), ...this.state.courses]
-    });
+    // this.setState({
+    //   courses: [generateRow(coursesLength + 1), ...this.state.courses]
+    // });
+
+    this.props.history.push(`/custom/courses/new`);
   }
 
   handleModelEdit = async course => {
@@ -258,13 +260,15 @@ class Table extends React.Component {
               <div className="d-flex ml-auto">
                 <CustomSearch className="mr-2" {...props.searchProps} />
                 <ButtonGroup>
-                  <CustomExportCSV {...props.csvProps}>Export</CustomExportCSV>
+                  <CustomExportCSV {...props.csvProps}>
+                    Exportar
+                  </CustomExportCSV>
                   <Button
                     size="sm"
                     outline
                     onClick={this.handleAddRow.bind(this)}
                   >
-                    Add <i className="fa fa-fw fa-plus"></i>
+                    Adicionar <i className="fa fa-fw fa-plus"></i>
                   </Button>
                 </ButtonGroup>
               </div>

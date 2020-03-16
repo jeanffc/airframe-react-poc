@@ -6,7 +6,8 @@ import { isAuthenticated } from "../services/auth";
 // ----------- Pages Imports ---------------
 import Payment from "./Custom/Payment";
 import Courses from "./Custom/Courses";
-import CourseForm from "./Custom/Courses/CourseForm";
+import CourseEdit from "./Custom/Courses/CourseEdit";
+import CourseCreate from "./Custom/Courses/CourseCreate";
 import Analytics from "./Dashboards/Analytics";
 import ProjectsDashboard from "./Dashboards/Projects";
 import System from "./Dashboards/System";
@@ -132,8 +133,8 @@ export const RoutedContent = () => {
 
       <PrivateRoute path="/custom/payments" exact component={Payment} />
       <PrivateRoute path="/custom/courses" exact component={Courses} />
-      <PrivateRoute path="/custom/courses/:id" exact component={CourseForm} />
-      <PrivateRoute path="/custom/courses/new" exact component={CourseForm} />
+      <PrivateRoute path="/custom/courses/:id" exact component={CourseEdit} />
+      <PrivateRoute path="/custom/courses/new" exact component={CourseCreate} />
 
       <Route path="/dashboards/analytics" exact component={Analytics} />
       <Route path="/dashboards/projects" exact component={ProjectsDashboard} />

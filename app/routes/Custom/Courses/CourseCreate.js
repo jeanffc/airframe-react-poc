@@ -24,7 +24,7 @@ import { HeaderDemo } from "../../components/HeaderDemo";
 import api from "../../../services/api";
 import { getAuthor } from "../../../services/auth";
 
-class CourseForm extends Component {
+class CourseCreate extends Component {
   constructor(props) {
     super(props);
 
@@ -50,23 +50,7 @@ class CourseForm extends Component {
     console.log(this.state);
   }
 
-  async componentDidMount() {
-    // console.log("PARAMS: ", this.props.location.state.course);
-    console.log("LOCATION: ", this.props.location);
-    console.log("PARAM: ", this.props.location.pathname.split("/").pop());
-    const param = this.props.location.pathname.split("/").pop();
-    try {
-      const response = await api.get(`/courses/${param}`);
-      console.log("RESPONSE: ", response.data);
-      if (response.data) {
-        this.setState({
-          course: response.data
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  async componentDidMount() {}
 
   handleSave = async e => {
     console.log("handleSave");
@@ -84,7 +68,7 @@ class CourseForm extends Component {
         price
       } = this.state.course;
 
-      const response = await api.put(`/courses/${id}`, {
+      const response = await api.post(`/courses/`, {
         available,
         author_id,
         title,
@@ -106,27 +90,7 @@ class CourseForm extends Component {
     return (
       <React.Fragment>
         <Container>
-          <HeaderMain
-            title={`Curso ${this.state.course.id}`}
-            className="mb-5 mt-4"
-          />
-          {/* START Header 1 */}
-          {/* <Row>
-            <Col lg={12}>
-              <HeaderDemo
-                no={1}
-                title="Basic Inputs"
-                subTitle={
-                  <React.Fragment>
-                    Indicate the current page’s location within a navigational
-                    hierarchy that automatically adds separators via CSS.
-                  </React.Fragment>
-                }
-              />
-            </Col>
-          </Row> */}
-          {/* END Header 1 */}
-          {/* START Section 1 */}
+          <HeaderMain title={`Cadastrar Curso`} className="mb-5 mt-4" />
           <Row>
             <Col lg={12}>
               <Card className="mb-3">
@@ -414,4 +378,4 @@ class CourseForm extends Component {
   }
 }
 
-export default CourseForm;
+export default CourseCreate;
