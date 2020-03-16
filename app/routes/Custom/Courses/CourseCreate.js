@@ -33,7 +33,6 @@ class CourseCreate extends Component {
         id: 0,
         available: false,
         author_id: 0,
-        // author: "",
         title: "",
         summary: "",
         description: "",
@@ -130,8 +129,16 @@ class CourseCreate extends Component {
                           name=""
                           id="input"
                           placeholder={this.state.course.author_id}
-                          disabled
-                          // value={this.state.course.id}
+                          // disabled
+                          value={this.state.course.author_id}
+                          onChange={e =>
+                            this.setState({
+                              course: {
+                                ...this.state.course,
+                                author_id: e.target.value
+                              }
+                            })
+                          }
                         />
                       </Col>
                     </FormGroup>
