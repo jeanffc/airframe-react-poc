@@ -41,7 +41,7 @@ const NavbarActivityFeed = props => (
     <DropdownToggle nav>
       <IconWithBadge
         badge={
-          <Badge pill color="primary">
+          <Badge pill color="secondary">
             0
           </Badge>
         }
