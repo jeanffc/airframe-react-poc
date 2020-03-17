@@ -50,8 +50,8 @@ class Table extends React.Component {
 
     this.state = {
       author: getAuthor() || 0,
-      // courses: []
-      courses: _.times(1, generateRow)
+      courses: []
+      // courses: _.times(1, generateRow)
     };
   }
 
