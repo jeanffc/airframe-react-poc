@@ -8,6 +8,9 @@ import Payment from "./Custom/Payment";
 import Courses from "./Custom/Courses";
 import CourseEdit from "./Custom/Courses/CourseEdit";
 import CourseCreate from "./Custom/Courses/CourseCreate";
+import Lessons from "./Custom/Lessons";
+import LessonEdit from "./Custom/Lessons/LessonEdit";
+import LessonCreate from "./Custom/Lessons/LessonCreate";
 import Analytics from "./Dashboards/Analytics";
 import ProjectsDashboard from "./Dashboards/Projects";
 import System from "./Dashboards/System";
@@ -132,9 +135,14 @@ export const RoutedContent = () => {
       <Redirect from="/" to="/pages/login" exact />
 
       <PrivateRoute path="/custom/payments" exact component={Payment} />
+
       <PrivateRoute path="/custom/courses" exact component={Courses} />
       <PrivateRoute path="/custom/courses/new" exact component={CourseCreate} />
       <PrivateRoute path="/custom/courses/:id" exact component={CourseEdit} />
+
+      <PrivateRoute path="/custom/lessons" exact component={Lessons} />
+      <PrivateRoute path="/custom/lessons/new" exact component={LessonCreate} />
+      <PrivateRoute path="/custom/lessons/:id" exact component={LessonEdit} />
 
       <Route path="/dashboards/analytics" exact component={Analytics} />
       <Route path="/dashboards/projects" exact component={ProjectsDashboard} />

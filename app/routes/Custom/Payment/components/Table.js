@@ -47,8 +47,8 @@ export class Table extends React.Component {
     super(props);
 
     this.state = {
-      transactions: _.times(10, generateRow),
-      transactions_total: 10
+      transactions: _.times(0, generateRow),
+      transactions_total: 0
     };
   }
 

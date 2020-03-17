@@ -34,9 +34,15 @@ const pagarme = require("pagarme");
 
 const generateRow = id => ({
   id,
+  order: 0,
   available: randomArray([true, false]),
+  free: randomArray([true, false]),
+  course_id: 0,
   title: faker.name.findName(),
-  summary: faker.lorem.sentence(8)
+  summary: faker.lorem.sentence(8),
+  description: "",
+  audio_url: "",
+  duration: ""
 });
 
 const sortCaret = order => {
@@ -50,17 +56,17 @@ class Table extends React.Component {
 
     this.state = {
       author: getAuthor() || 0,
-      // courses: []
-      courses: _.times(1, generateRow)
+      // lessons: []
+      lessons: _.times(1, generateRow)
     };
   }
 
   async componentDidMount() {
     try {
-      const response = await api.get("/courses", this.state.author);
+      const response = await api.get("/lessons", this.state.author);
       if (response.data) {
         this.setState({
-          courses: response.data
+          lessons: response.data
         });
       }
     } catch (error) {
@@ -69,31 +75,25 @@ class Table extends React.Component {
   }
 
   handleAddRow() {
-    // const coursesLength = this.state.courses.length;
-
-    // this.setState({
-    //   courses: [generateRow(coursesLength + 1), ...this.state.courses]
-    // });
-
-    this.props.history.push(`/custom/courses/new`);
+    this.props.history.push(`/custom/lessons/new`);
   }
 
-  handleModelEdit = async course => {
-    console.log("course: ", course);
-    this.props.history.push(`/custom/courses/${course.id}`);
+  handleModelEdit = async lesson => {
+    console.log("lesson: ", lesson);
+    this.props.history.push(`/custom/lessons/${lesson.id}`);
     // this.props.history.push({
-    //   pathname: `/custom/courses/${course.id}`,
-    //   state: { course }
+    //   pathname: `/custom/lessons/${lesson.id}`,
+    //   state: { lesson }
     // });
   };
 
-  handleModelDelete = async course => {
-    console.log("course: ", course);
+  handleModelDelete = async lesson => {
+    console.log("lesson: ", lesson);
     try {
-      const response = await api.delete(`/courses/${course.id}`);
+      const response = await api.delete(`/lessons/${lesson.id}`);
       if (response.data) {
         this.setState({
-          courses: this.state.courses.filter(obj => {
+          lessons: this.state.lessons.filter(obj => {
             return obj.id != response.data.id;
           })
         });
@@ -111,9 +111,21 @@ class Table extends React.Component {
         sort: true,
         sortCaret
       },
+      // {
+      //   dataField: "available",
+      //   text: "Disponível",
+      //   sort: true,
+      //   sortCaret
+      // },
       {
-        dataField: "available",
-        text: "Disponível",
+        dataField: "free",
+        text: "Gratuito",
+        sort: true,
+        sortCaret
+      },
+      {
+        dataField: "order",
+        text: "Ordem",
         sort: true,
         sortCaret
       },
@@ -249,7 +261,7 @@ class Table extends React.Component {
     return (
       <ToolkitProvider
         keyField="id"
-        data={this.state.courses}
+        data={this.state.lessons}
         columns={columnDefs}
         search
         exportCSV

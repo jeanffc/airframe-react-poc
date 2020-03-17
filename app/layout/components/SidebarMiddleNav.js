@@ -16,6 +16,7 @@ export const SidebarMiddleNav = () => (
       title="Couteúdos"
     >
       <SidebarMenu.Item title="Cursos" to="/custom/courses" exact />
+      <SidebarMenu.Item title="Lições" to="/custom/lessons" exact />
     </SidebarMenu.Item>
 
     <SidebarMenu.Item
