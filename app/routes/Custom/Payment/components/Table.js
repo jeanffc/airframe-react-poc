@@ -288,14 +288,16 @@ export class Table extends React.Component {
               <div className="d-flex ml-auto">
                 <CustomSearch className="mr-2" {...props.searchProps} />
                 <ButtonGroup>
-                  <CustomExportCSV {...props.csvProps}>Export</CustomExportCSV>
-                  <Button
+                  <CustomExportCSV {...props.csvProps}>
+                    Exportar
+                  </CustomExportCSV>
+                  {/* <Button
                     size="sm"
                     outline
                     onClick={this.handleAddRow.bind(this)}
                   >
                     Add <i className="fa fa-fw fa-plus"></i>
-                  </Button>
+                  </Button> */}
                 </ButtonGroup>
               </div>
             </div>
