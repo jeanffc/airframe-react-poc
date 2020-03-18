@@ -111,6 +111,12 @@ class Table extends React.Component {
         sort: true,
         sortCaret
       },
+      {
+        dataField: "course_id",
+        text: "Curso",
+        sort: true,
+        sortCaret
+      },
       // {
       //   dataField: "available",
       //   text: "Disponível",
