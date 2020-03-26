@@ -39,7 +39,7 @@ export class CustomSearch extends React.Component {
           }}
           value={this.state.value}
           className="bg-white"
-          placeholder="Type to search..."
+          placeholder="Buscar..."
         />
         {this.state.value && (
           <InputGroupAddon addonType="append">
