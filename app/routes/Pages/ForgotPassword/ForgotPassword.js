@@ -110,9 +110,9 @@ class ForgotPassword extends Component {
             <Link to="/pages/login" className="text-decoration-none">
               Login
             </Link>
-            <Link to="/pages/register" className="ml-auto text-decoration-none">
+            {/* <Link to="/pages/register" className="ml-auto text-decoration-none">
               Cadastrar
-            </Link>
+            </Link> */}
           </div>
           {/* END Bottom Links */}
           {/* START Footer */}

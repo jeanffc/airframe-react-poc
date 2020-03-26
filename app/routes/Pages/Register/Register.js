@@ -51,7 +51,7 @@ class Register extends Component {
     }
 
     if (email && password && password == repeat_password) {
-      this.props.history.push("/dashboards/dashboard");
+      // this.props.history.push("/dashboards/dashboard");
     }
   };
 

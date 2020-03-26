@@ -145,15 +145,16 @@ class Login extends Component {
               )}
             </ThemeConsumer>
           </Form>
+
           {/* END Form */}
           {/* START Bottom Links */}
           <div className="d-flex mb-5">
             <Link to="/pages/forgot-password" className="text-decoration-none">
               Esqueci minha senha
             </Link>
-            <Link to="/pages/register" className="ml-auto text-decoration-none">
+            {/* <Link to="/pages/register" className="ml-auto text-decoration-none">
               Cadastrar
-            </Link>
+            </Link> */}
           </div>
           {/* END Bottom Links */}
           {/* START Footer */}

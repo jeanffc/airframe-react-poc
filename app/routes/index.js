@@ -252,7 +252,7 @@ export const RoutedContent = () => {
       <Route component={ForgotPassword} path="/pages/forgot-password" />
       <Route component={LockScreen} path="/pages/lock-screen" />
       <Route component={Login} path="/pages/login" />
-      <Route component={Register} path="/pages/register" />
+      {/* <Route component={Register} path="/pages/register" /> */}
       <Route component={Success} path="/pages/success" />
       <Route component={Timeline} path="/pages/timeline" />
 
