@@ -119,7 +119,7 @@ import { SidebarASidebar } from "./../layout/components/SidebarASidebar";
 export const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={props =>
+    render={(props) =>
       isAuthenticated() ? (
         <Component {...props} />
       ) : (

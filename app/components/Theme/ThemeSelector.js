@@ -14,13 +14,13 @@ class ThemeSelector extends React.Component {
     styleOptions: PropTypes.array,
     styleDisabled: PropTypes.bool,
     colorOptions: PropTypes.array,
-    onChangeTheme: PropTypes.func
+    onChangeTheme: PropTypes.func,
   };
   static defaultProps = {
     styleOptions: [
       { name: "Light", value: "light" },
       { name: "Dark", value: "dark" },
-      { name: "Color", value: "color" }
+      { name: "Color", value: "color" },
     ],
     colorOptions: [
       { name: "Primary", value: "primary" },
@@ -31,8 +31,8 @@ class ThemeSelector extends React.Component {
       { name: "Indigo", value: "indigo" },
       { name: "Purple", value: "purple" },
       { name: "Pink", value: "pink" },
-      { name: "Yellow", value: "yellow" }
-    ]
+      { name: "Yellow", value: "yellow" },
+    ],
   };
 
   constructor(props) {
@@ -41,25 +41,25 @@ class ThemeSelector extends React.Component {
     this.state = {
       isActive: false,
       initialStyle: "",
-      initialColor: ""
+      initialColor: "",
     };
   }
 
   componentDidMount() {
     this.setState({
       initialColor: this.props.color,
-      initialStyle: this.props.style
+      initialStyle: this.props.style,
     });
   }
 
   render() {
     const rootClass = classNames("theme-config", {
-      "theme-config--active": this.state.isActive
+      "theme-config--active": this.state.isActive,
     });
 
     return (
       <div className={rootClass}>
-        <Button
+        {/* <Button
           color="primary"
           className="theme-config__trigger"
           onClick={() => {
@@ -67,7 +67,7 @@ class ThemeSelector extends React.Component {
           }}
         >
           <i className="fa fa-paint-brush fa-fw"></i>
-        </Button>
+        </Button> */}
         <Card className="theme-config__body">
           <CardBody>
             <h6 className="text-center mb-3">Configurator</h6>
@@ -82,10 +82,10 @@ class ThemeSelector extends React.Component {
                   id={`sidebarStyle--${option.value}`}
                   value={option.value}
                   checked={this.props.color === option.value}
-                  onChange={ev => {
+                  onChange={(ev) => {
                     if (ev.target.checked) {
                       this.props.onChangeTheme({
-                        color: option.value
+                        color: option.value,
                       });
                     }
                   }}
@@ -111,10 +111,10 @@ class ThemeSelector extends React.Component {
                   value={option.value}
                   disabled={this.props.styleDisabled}
                   checked={this.props.style === option.value}
-                  onChange={ev => {
+                  onChange={(ev) => {
                     if (ev.target.checked) {
                       this.props.onChangeTheme({
-                        style: option.value
+                        style: option.value,
                       });
                     }
                   }}
@@ -130,7 +130,7 @@ class ThemeSelector extends React.Component {
                 onClick={() => {
                   this.props.onChangeTheme({
                     color: this.state.initialColor,
-                    style: this.state.initialStyle
+                    style: this.state.initialStyle,
                   });
                 }}
               >
@@ -144,9 +144,9 @@ class ThemeSelector extends React.Component {
   }
 }
 
-const ContextThemeSelector = props => (
+const ContextThemeSelector = (props) => (
   <Consumer>
-    {themeState => <ThemeSelector {...themeState} {...props} />}
+    {(themeState) => <ThemeSelector {...themeState} {...props} />}
   </Consumer>
 );
 
