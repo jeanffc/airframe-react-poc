@@ -2,10 +2,11 @@ import axios from "axios";
 import { getToken } from "./auth";
 
 const api = axios.create({
-  baseURL: "http://127.0.0.1:3333"
+  // baseURL: "http://127.0.0.1:3333"
+  baseURL: "http://welearn-server-dev.us-east-1.elasticbeanstalk.com",
 });
 
-api.interceptors.request.use(async config => {
+api.interceptors.request.use(async (config) => {
   const token = getToken();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
